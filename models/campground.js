@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const Review = require('./review')
+const Review = require('./review');
 const Schema = mongoose.Schema;
-
 
 // https://res.cloudinary.com/douqbebwk/image/upload/w_300/v1600113904/YelpCamp/gxgle1ovzd2f3dgcpass.png
 
@@ -23,11 +22,11 @@ const CampgroundSchema = new Schema({
         type: {
             type: String,
             enum: ['Point'],
-            required: true
+            required: false // Changed to optional
         },
         coordinates: {
             type: [Number],
-            required: true
+            required: false // Changed to optional
         }
     },
     price: Number,
@@ -45,14 +44,11 @@ const CampgroundSchema = new Schema({
     ]
 }, opts);
 
-
 CampgroundSchema.virtual('properties.popUpMarkup').get(function () {
     return `
     <strong><a href="/campgrounds/${this._id}">${this.title}</a><strong>
-    <p>${this.description.substring(0, 20)}...</p>`
+    <p>${this.description.substring(0, 20)}...</p>`;
 });
-
-
 
 CampgroundSchema.post('findOneAndDelete', async function (doc) {
     if (doc) {
@@ -60,8 +56,8 @@ CampgroundSchema.post('findOneAndDelete', async function (doc) {
             _id: {
                 $in: doc.reviews
             }
-        })
+        });
     }
-})
+});
 
 module.exports = mongoose.model('Campground', CampgroundSchema);
