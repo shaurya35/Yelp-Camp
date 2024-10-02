@@ -7,3 +7,12 @@
     width: 100%;
     height: 300px;
 }
+
+/* New code to handle the case when the map is not available */
+.no-map #cluster-map, .no-map #map {
+    display: none; /* Hide map when the token is missing */
+}
+
+.no-map .campground-details {
+    margin-top: 0; /* Move campground content to the top when there's no map */
+}
